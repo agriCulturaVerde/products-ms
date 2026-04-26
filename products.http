@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3012/api/v1
+@productId = 2d80b4ae-6c77-4ea2-a22d-a463cb160bc0
+
+### Crear producto
+POST {{baseUrl}}/products
+Content-Type: application/json
+
+{
+  "name": "Mouse Gamer 4",
+  "description": "Mouse gamer con iluminación RGB y alta precisión",
+  "price": 49.99
+}
+
+### Listar productos
+GET {{baseUrl}}/products?page=1&limit=5
+
+### Obtener producto por id
+GET {{baseUrl}}/products/{{productId}}
+
+### Actualizar producto por id
+PATCH {{baseUrl}}/products/{{productId}}
+Content-Type: application/json
+
+{
+  "name": "aMouse Gamer Pro",
+  "price": 59.99
+}
+
+### Eliminar producto por id
+DELETE {{baseUrl}}/products/{{productId}}
