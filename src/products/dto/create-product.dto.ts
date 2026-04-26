@@ -4,7 +4,7 @@ import { IsNumber, IsString, Min } from "class-validator";
 export class CreateProductDto {
 
     @IsString()
-    public name: string;
+    public name!: string;
 
     @IsString()
     public description;
@@ -12,5 +12,5 @@ export class CreateProductDto {
     @IsNumber({ maxDecimalPlaces: 2 })
     @Min(0)
     @Type(() => Number) // Asegura que el valor se transforme a número
-    public price: number;
+    public price!: number;
 }
