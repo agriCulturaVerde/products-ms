@@ -1,5 +1,5 @@
-@baseUrl = http://localhost:3012/api/v1
-@productId = 2d80b4ae-6c77-4ea2-a22d-a463cb160bc0
+@baseUrl = http://localhost:3000/api/v1
+@productId = 3ce52d7f-c4f3-4bf7-b72d-e0fd00d4aad8
 
 ### Crear producto
 POST {{baseUrl}}/products
