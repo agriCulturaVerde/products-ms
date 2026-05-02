@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { PaginationDto } from 'src/common/dto';
+import { PaginationDto } from 'src/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('products')
@@ -12,7 +12,7 @@ export class ProductsController {
 
   // @Post()
   @MessagePattern({ cmd: 'createProduct' })
-  create(@Payload() createProductDto: CreateProductDto) {
+  create(@Payload('createProductDto') createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
 
@@ -45,5 +45,11 @@ export class ProductsController {
   @MessagePattern({ cmd: 'removeProduct' })
   remove(@Payload('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
+  }
+
+  @MessagePattern({ cmd: 'validateProducts' })
+  async validateProducts(@Payload('ids') ids: string[]) {
+    this.logger.log(`Validating products with ids: ${ids.join(', ')}`);
+    return await this.productsService.validateProducts(ids);
   }
 }

@@ -2,10 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PrismaService } from 'src/prisma.service';
-import { PaginationDto } from 'src/common/dto';
+import { PaginationDto } from 'src/common';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductsService {
+
   constructor(private prismaService: PrismaService) { }
 
   async create(createProductDto: CreateProductDto) {
@@ -32,7 +34,7 @@ export class ProductsService {
   async findOne(id: string) {
     const product = await this.prismaService.product.findUnique({ where: { id } });
     if (!product) {
-      throw new NotFoundException(`Product with id ${id} not found`);
+      throw new RpcException(`Product with id ${id} not found`);
     }
     return product;
   }
@@ -48,5 +50,13 @@ export class ProductsService {
 
   remove(id: string) {
     return this.prismaService.product.delete({ where: { id } });
+  }
+
+  async validateProducts(ids: string[]): Promise<{ id: string[] }> {
+    const products = await this.prismaService.product.findMany({
+      where: { id: { in: ids } },
+    });
+
+    return { id: products.map(product => product.id) };
   }
 }
